@@ -4,842 +4,949 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Chess AI - Pro Edition</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<title>KANYIN HYDROPOWER</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;padding:18px;min-height:100vh;
- background:radial-gradient(circle at top,#20203b,#080b14 65%);
- color:#fff;font-family:Arial,sans-serif;
- display:flex;justify-content:center;align-items:center
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-.app{
- width:100%;max-width:1100px;padding:22px;
- background:#111827;border:1px solid #343451;
- border-radius:20px;box-shadow:0 20px 70px #000b
+
+body {
+    font-family: Arial, sans-serif;
+    background: #05080e;
+    color: white;
 }
-header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px}
-h1{margin:0;color:#b39aff;letter-spacing:2px}
-.sub{color:#8491a8;font-size:11px;letter-spacing:3px;margin-top:7px}
-.online{color:#4ade80;font-size:12px}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:22px}
-.player{
- background:#20283a;padding:12px 15px;border-radius:10px;
- display:flex;justify-content:space-between;align-items:center;
- margin:10px 0;border:1px solid #303a51
+
+/* LOGIN */
+#login {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #dff6ff, #8bd5ff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-.player.active{border:1px solid #a78bfa;box-shadow:0 0 15px #8b5cf655}
-.avatar{font-size:25px;margin-right:8px}
-.board{
- display:grid;grid-template-columns:repeat(8,1fr);
- width:100%;aspect-ratio:1;border:4px solid #303b54;
- border-radius:6px;overflow:hidden
+
+.brand {
+    text-align: center;
+    margin-bottom: 30px;
 }
-.square{
- position:relative;aspect-ratio:1;display:flex;
- align-items:center;justify-content:center;cursor:pointer;
- user-select:none
+
+.brand h1 {
+    color: #003c65;
+    font-size: 48px;
+    letter-spacing: 8px;
+    animation: slideIn 1.8s ease;
 }
-.light{background:#d0d5e0}
-.dark{background:#485571}
-.square.selected{background:#a78bfa!important}
-.square.last{background:#9b91c0}
-.square.target:after{
- content:"";width:24%;height:24%;border-radius:50%;
- background:#18202c99;position:absolute
+
+.brand h2 {
+    color: #087db9;
+    letter-spacing: 5px;
+    margin-top: 8px;
+    animation: slideIn 2.5s ease;
 }
-.square.capture:after{
- content:"";position:absolute;inset:4px;
- border:4px solid #a78bfa;border-radius:50%
+
+@keyframes slideIn {
+    from { transform: translateX(100vw); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
-.piece{
- z-index:1;font-size:clamp(25px,6.5vw,65px);
- line-height:1;text-shadow:0 3px 5px #0009
+
+.login-box {
+    width: 320px;
+    padding: 30px;
+    background: rgba(255,255,255,.85);
+    border-radius: 18px;
+    text-align: center;
 }
-.panel{background:#1a2232;padding:17px;border-radius:13px;border:1px solid #303b50}
-.panel h3{color:#b39aff;font-size:14px;margin:8px 0 12px}
-.status{
- background:#101827;padding:13px;border-radius:9px;
- color:#c4b5fd;min-height:47px;font-size:13px;
- line-height:1.5;font-weight:bold
+
+.login-box h3 {
+    color: #00466e;
+    margin-bottom: 20px;
 }
-label{display:block;color:#aab5c8;font-size:12px;margin-top:15px}
-input,select,button{
- width:100%;padding:12px;margin-top:8px;
- border-radius:8px;border:1px solid #39465f;
- background:#29364d;color:white;font-size:14px
+
+.login-box input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #8acbe9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 16px;
 }
-input{outline:none}
-button{cursor:pointer}
-button:hover{filter:brightness(1.2)}
-.primary{background:#7655df;border-color:#7655df}
-.clock{
- display:flex;justify-content:space-between;gap:10px;
- margin:12px 0
+
+.login-box button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    background: #007dbb;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
 }
-.clockbox{
- flex:1;background:#0c1320;border:1px solid #35405a;
- border-radius:10px;padding:12px;text-align:center
+
+#error {
+    color: red;
+    margin-top: 12px;
 }
-.clockbox.active{border-color:#a78bfa;box-shadow:0 0 12px #8b5cf655}
-.time{font-size:25px;font-weight:bold;letter-spacing:2px;color:#fff}
-.time.low{color:#fb7185}
-.clockname{font-size:11px;color:#91a0b8;margin-bottom:7px}
-.history{
- height:140px;overflow-y:auto;background:#101827;
- border-radius:8px;padding:10px;font-size:12px;color:#d1d5db
+
+/* DASHBOARD */
+#dashboard {
+    display: none;
+    padding: 20px;
 }
-.history div{padding:6px;border-bottom:1px solid #28344a}
-.controls{display:flex;gap:8px}
-.controls button{flex:1}
-.small{font-size:11px;color:#8290a8;line-height:1.7;margin-top:14px}
-.overlay{
- position:fixed;inset:0;background:#050711eF;
- display:none;justify-content:center;align-items:center;
- padding:20px;z-index:10
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
 }
-.overlay.show{display:flex}
-.result{
- width:100%;max-width:400px;text-align:center;
- background:#171d30;border:1px solid #a78bfa;
- border-radius:20px;padding:30px;
- box-shadow:0 0 50px #8b5cf655;
- animation:appear .5s ease
+
+.header h1 {
+    color: #00d5ff;
+    text-shadow: 0 0 12px #00aaff;
 }
-.result .trophy{font-size:65px;animation:bounce 1s infinite alternate}
-.result h2{color:#c4b5fd}
-@keyframes appear{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes bounce{to{transform:translateY(-10px) rotate(5deg)}}
-@media(max-width:720px){
- body{padding:7px;align-items:flex-start}
- .app{padding:12px}
- .layout{grid-template-columns:1fr}
- .panel{margin-top:5px}
- h1{font-size:21px}
+
+.header button {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+/* PANELS */
+.panel {
+    background: #101a29;
+    border: 1px solid #1e3b55;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0,180,255,.08);
+}
+
+.graph-title {
+    text-align: center;
+    color: #00d5ff;
+    font-size: 25px;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px #00aaff;
+}
+
+.panel h2:not(.graph-title) {
+    color: #00d5ff;
+    margin-bottom: 18px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+select, input, textarea {
+    background: #07111e;
+    color: white;
+    border: 1px solid #31516d;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+select:disabled {
+    opacity: .5;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 430px;
+}
+
+#periodInfo {
+    color: #9eb6ca;
+    margin-top: 12px;
+}
+
+/* TABLE */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th, td {
+    border: 1px solid #29445c;
+    padding: 11px;
+    text-align: center;
+}
+
+th {
+    background: #12304a;
+    color: #00d5ff;
+}
+
+td {
+    background: #0a1420;
+}
+
+.remark-cell {
+    text-align: left;
+    white-space: pre-wrap;
+    min-width: 180px;
+    max-width: 300px;
+    overflow-wrap: anywhere;
+    color: #d8e8f5;
+}
+
+.action-btn {
+    border: none;
+    padding: 7px 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin: 3px;
+}
+
+.edit-btn { background: #087db9; }
+.delete-btn { background: #d62828; }
+.note-btn { background: #008f65; }
+
+/* ADMIN */
+.admin-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.admin-form input {
+    width: 100%;
+}
+
+.admin-form textarea {
+    width: 100%;
+    min-height: 75px;
+    resize: vertical;
+    grid-column: 1 / -1;
+}
+
+.main-btn {
+    background: #00a86b;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+#note {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    margin: 10px 0;
+}
+
+.note-display {
+    white-space: pre-wrap;
+    line-height: 1.7;
+    color: #d8e8f5;
+}
+
+@media(max-width:600px) {
+    .brand h1 { font-size: 34px; }
+    #dashboard { padding: 10px; }
+    .chart-container { height: 350px; }
+    .graph-title { font-size: 19px; }
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-<header>
- <div>
-  <h1>♟ DARK CHESS</h1>
-  <div class="sub">PROFESSIONAL AI EDITION</div>
- </div>
- <div class="online">● READY TO PLAY</div>
-</header>
+<!-- LOGIN -->
+<section id="login">
+    <div class="brand">
+        <h1>KANYIN</h1>
+        <h2>HYDROPOWER</h2>
+    </div>
 
-<div class="clock">
- <div class="clockbox" id="blackClockBox">
-  <div class="clockname">🤖 COMPUTER AI · BLACK</div>
-  <div class="time" id="blackTime">10:00</div>
- </div>
- <div class="clockbox" id="whiteClockBox">
-  <div class="clockname">👤 YOU · WHITE</div>
-  <div class="time" id="whiteTime">10:00</div>
- </div>
-</div>
-
-<div class="layout">
-
-<section>
- <div class="player" id="blackPlayer">
-  <span><span class="avatar">🤖</span><span id="aiName">Computer AI</span></span>
-  <b>BLACK</b>
- </div>
-
- <div class="board" id="board"></div>
-
- <div class="player active" id="whitePlayer">
-  <span><span class="avatar">👤</span><span id="displayName">Player</span></span>
-  <b>WHITE</b>
- </div>
+    <div class="login-box">
+        <h3>LOGIN SYSTEM</h3>
+        <input type="password" id="pass" placeholder="Enter Password"
+        onkeydown="if(event.key==='Enter') login()">
+        <button onclick="login()">LOGIN</button>
+        <p id="error"></p>
+    </div>
 </section>
 
-<aside class="panel">
+<!-- DASHBOARD -->
+<section id="dashboard">
 
- <h3>🎮 GAME STATUS</h3>
- <div class="status" id="status">Loading Chess Engine...</div>
+    <div class="header">
+        <h1>KANYIN HYDROPOWER</h1>
+        <div>
+            <span id="role"></span>
+            <button onclick="logout()">LOGOUT</button>
+        </div>
+    </div>
 
- <h3>👤 PLAYER PROFILE</h3>
- <label>Your Name</label>
- <input id="playerName" maxlength="18" placeholder="Enter your name">
+    <!-- GRAPH -->
+    <div class="panel">
+        <h2 class="graph-title">KANYIN HYDROPOWER</h2>
 
- <button id="saveProfile">SAVE PROFILE</button>
+        <div class="filters">
+            <label>PERIOD</label>
+            <select id="period" onchange="updateGraph()">
+                <option value="daily">DAILY</option>
+                <option value="monthly">MONTHLY</option>
+                <option value="yearly">YEARLY</option>
+            </select>
 
- <h3>🧠 AI SETTINGS</h3>
- <label>Difficulty</label>
- <select id="difficulty">
-  <option value="1">Easy</option>
-  <option value="2" selected>Normal</option>
-  <option value="3">Hard</option>
-  <option value="4">Expert</option>
- </select>
+            <label>YEAR</label>
+            <select id="yearSelect" onchange="updateGraph()"></select>
 
- <label>Chess Clock</label>
- <select id="clockSetting">
-  <option value="3">3 Minutes</option>
-  <option value="5">5 Minutes</option>
-  <option value="10" selected>10 Minutes</option>
-  <option value="15">15 Minutes</option>
-  <option value="30">30 Minutes</option>
- </select>
+            <label>MONTH</label>
+            <select id="monthSelect" onchange="updateGraph()">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
 
- <label>Sound Effect</label>
- <select id="soundSetting">
-  <option value="on" selected>Sound ON</option>
-  <option value="off">Sound OFF</option>
- </select>
+        <div class="chart-container">
+            <canvas id="graph"></canvas>
+        </div>
 
- <h3>🏆 PLAYER RECORD</h3>
- <div class="small" id="record">
-  Wins: 0 | Losses: 0 | Draws: 0
- </div>
+        <p id="periodInfo"></p>
+    </div>
 
- <button class="primary" id="newGame">＋ NEW GAME</button>
- <div class="controls">
-  <button id="undo">↶ UNDO</button>
-  <button id="resetRecord">RESET RECORD</button>
- </div>
+    <!-- DATA TABLE -->
+    <div class="panel">
+        <h2>DAILY RECORDS & REMARKS</h2>
 
- <h3>📜 MOVE HISTORY</h3>
- <div class="history" id="history"></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>MWh</th>
+                        <th>Water Level (m)</th>
+                        <th>DAILY REMARKS</th>
+                        <th id="actionHeading">ACTION</th>
+                    </tr>
+                </thead>
 
- <div class="small">
-  YOU: WHITE ♙<br>
-  COMPUTER: BLACK ♟<br>
-  Expert mode may take longer to think.
- </div>
- <div id="error" class="small" style="color:#fca5a5"></div>
-</aside>
+                <tbody id="records"></tbody>
+            </table>
+        </div>
+    </div>
 
-</div>
-</div>
+    <!-- ADMIN DATA ENTRY -->
+    <div class="panel" id="adminPanel">
+        <h2>ADMIN - DATA ENTRY</h2>
 
-<div class="overlay" id="overlay">
- <div class="result">
-  <div class="trophy" id="resultIcon">🏆</div>
-  <h2 id="resultTitle">YOU WIN!</h2>
-  <p id="resultText">Congratulations!</p>
-  <button class="primary" id="playAgain">PLAY AGAIN</button>
-  <button id="closeResult">CLOSE</button>
- </div>
-</div>
+        <div class="admin-form">
+            <input type="date" id="date">
+            <input type="number" id="mwh" placeholder="MWh" step="any">
+            <input type="number" id="water" placeholder="Water Level (m)" step="any">
+
+            <textarea id="dailyRemark"
+            placeholder="Write daily remark for this date..."></textarea>
+
+            <button class="main-btn" onclick="saveData()">
+                SAVE DATA & REMARK
+            </button>
+        </div>
+    </div>
+
+    <!-- GENERAL REMARKS -->
+    <div class="panel">
+        <h2>GENERAL REMARKS / NOTES</h2>
+
+        <div id="noteView" class="note-display"></div>
+
+        <div id="noteEditor">
+            <textarea id="note" placeholder="Write general remarks here..."></textarea>
+            <button class="main-btn" onclick="saveNote()">SAVE REMARKS</button>
+        </div>
+    </div>
+
+</section>
 
 <script>
-/* CHESS LIBRARY */
 
-const urls = [
- "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js",
- "https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js",
- "https://unpkg.com/chess.js@0.10.3/chess.min.js"
-];
+/* PASSWORDS */
+const VIEWER_PASSWORD = "kanyin2024";
+const ADMIN_PASSWORD = "ryan7667";
 
-let game = null;
-let selected = null;
-let possible = [];
-let thinking = false;
-let finished = false;
-let timerStarted = false;
-let whiteSeconds = 600;
-let blackSeconds = 600;
-let timer = null;
-let timeWinner = null;
-let clockHistory = [];
+let currentRole = "";
 
-const glyph = {
- wk:"♔",wq:"♕",wr:"♖",wb:"♗",wn:"♘",wp:"♙",
- bk:"♚",bq:"♛",br:"♜",bb:"♝",bn:"♞",bp:"♟"
-};
+let data = JSON.parse(localStorage.getItem("kanyinData") || "[]");
 
-const values = {
- p:100,n:320,b:330,r:500,q:900,k:20000
-};
+let savedNote = localStorage.getItem("kanyinNote") || "";
 
-const $ = id => document.getElementById(id);
+let chart = null;
 
-function showError(msg) {
- $("error").textContent = msg;
+/* LOGIN */
+function login() {
+    const password = document.getElementById("pass").value;
+
+    if (password === ADMIN_PASSWORD) {
+        currentRole = "ADMIN";
+    } else if (password === VIEWER_PASSWORD) {
+        currentRole = "VIEWER";
+    } else {
+        document.getElementById("error").innerText = "Incorrect Password!";
+        return;
+    }
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    document.getElementById("role").innerText = " | " + currentRole;
+
+    document.getElementById("adminPanel").style.display =
+        currentRole === "ADMIN" ? "block" : "none";
+
+    document.getElementById("noteEditor").style.display =
+        currentRole === "ADMIN" ? "block" : "none";
+
+    document.getElementById("actionHeading").style.display =
+        currentRole === "ADMIN" ? "table-cell" : "none";
+
+    setupFilters();
+    renderTable();
+    renderNote();
+    updateGraph();
 }
 
-function loadLibrary(i=0) {
- if (i>=urls.length) {
-  $("status").textContent="Chess Engine failed to load.";
-  showError("Internet ချိတ်ဆက်ပြီး Browser ကို Refresh လုပ်ပါ။");
-  return;
- }
+/* LOGOUT */
+function logout() {
+    currentRole = "";
 
- const script=document.createElement("script");
- script.src=urls[i];
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("login").style.display = "flex";
 
- script.onload=()=>{
-  if (typeof window.Chess==="function") init();
-  else {script.remove();loadLibrary(i+1);}
- };
-
- script.onerror=()=>{
-  script.remove();
-  loadLibrary(i+1);
- };
-
- document.head.appendChild(script);
+    document.getElementById("pass").value = "";
+    document.getElementById("error").innerText = "";
 }
 
-/* SOUND EFFECTS */
+/* FILTERS */
+function setupFilters() {
+    const yearSelect = document.getElementById("yearSelect");
+    const currentDate = new Date();
 
-let audioContext=null;
+    const years = new Set(
+        data.map(item => Number(item.date.substring(0, 4)))
+    );
 
-function sound(type) {
- if ($("soundSetting").value==="off") return;
+    years.add(currentDate.getFullYear());
 
- try {
-  audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+    yearSelect.innerHTML = "";
 
-  if(audioContext.state==="suspended") audioContext.resume();
+    [...years].sort((a, b) => b - a).forEach(year => {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    });
 
-  const osc=audioContext.createOscillator();
-  const gain=audioContext.createGain();
+    yearSelect.value = currentDate.getFullYear();
 
-  const settings={
-   move:[420,300,.09],
-   capture:[260,150,.16],
-   check:[650,900,.22],
-   win:[520,900,.45],
-   lose:[300,120,.55]
-  };
-
-  const [start,end,duration]=settings[type]||settings.move;
-
-  osc.type="sine";
-  osc.frequency.setValueAtTime(start,audioContext.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(
-   end,audioContext.currentTime+duration
-  );
-
-  gain.gain.setValueAtTime(.12,audioContext.currentTime);
-  gain.gain.exponentialRampToValueAtTime(
-   .001,audioContext.currentTime+duration
-  );
-
-  osc.connect(gain);
-  gain.connect(audioContext.destination);
-  osc.start();
-  osc.stop(audioContext.currentTime+duration);
- } catch(e) {}
+    document.getElementById("monthSelect").value =
+        currentDate.getMonth() + 1;
 }
 
-/* PROFILE AND RECORD */
+/* SAVE DATA AND DAILY REMARK */
+function saveData() {
+    if (currentRole !== "ADMIN") return;
 
-function getRecord() {
- try {
-  return JSON.parse(localStorage.getItem("darkChessRecord")) ||
-   {wins:0,losses:0,draws:0};
- } catch(e) {
-  return {wins:0,losses:0,draws:0};
- }
+    const date = document.getElementById("date").value;
+    const mwhInput = document.getElementById("mwh").value;
+    const waterInput = document.getElementById("water").value;
+    const dailyRemark = document.getElementById("dailyRemark").value;
+
+    const mwh = Number(mwhInput);
+    const water = Number(waterInput);
+
+    if (!date || mwhInput === "" || waterInput === "" ||
+        !Number.isFinite(mwh) || !Number.isFinite(water)) {
+        alert("Please fill in Date, MWh and Water Level!");
+        return;
+    }
+
+    if (mwh < 0 || water < 0) {
+        alert("Values cannot be negative!");
+        return;
+    }
+
+    const index = data.findIndex(item => item.date === date);
+
+    const oldRemark = index >= 0 ? (data[index].remark || "") : "";
+
+    const record = {
+        date: date,
+        mwh: mwh,
+        water: water,
+        remark: dailyRemark.trim() || oldRemark
+    };
+
+    if (index >= 0) {
+        data[index] = record;
+    } else {
+        data.push(record);
+    }
+
+    data.sort((a, b) => a.date.localeCompare(b.date));
+
+    localStorage.setItem("kanyinData", JSON.stringify(data));
+
+    document.getElementById("date").value = "";
+    document.getElementById("mwh").value = "";
+    document.getElementById("water").value = "";
+    document.getElementById("dailyRemark").value = "";
+
+    setupFilters();
+    renderTable();
+    updateGraph();
+
+    alert("Data and Daily Remark Saved!");
 }
 
-function saveRecord(record) {
- localStorage.setItem("darkChessRecord",JSON.stringify(record));
- updateRecord();
+/* EDIT DATA */
+function editData(date) {
+    if (currentRole !== "ADMIN") return;
+
+    const item = data.find(record => record.date === date);
+    if (!item) return;
+
+    document.getElementById("date").value = item.date;
+    document.getElementById("mwh").value = item.mwh;
+    document.getElementById("water").value = item.water;
+    document.getElementById("dailyRemark").value = item.remark || "";
+
+    document.getElementById("adminPanel").scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
-function updateRecord() {
- const r=getRecord();
- $("record").textContent=
-  "Wins: "+r.wins+" | Losses: "+r.losses+" | Draws: "+r.draws;
+/* EDIT DAILY REMARK ONLY */
+function editDailyRemark(date) {
+    if (currentRole !== "ADMIN") return;
+
+    const item = data.find(record => record.date === date);
+    if (!item) return;
+
+    const newRemark = prompt(
+        "Write or edit remark for " + date,
+        item.remark || ""
+    );
+
+    if (newRemark === null) return;
+
+    item.remark = newRemark.trim();
+
+    localStorage.setItem("kanyinData", JSON.stringify(data));
+
+    renderTable();
+
+    alert("Daily Remark Updated!");
 }
 
-function saveProfile() {
- const name=$("playerName").value.trim() || "Player";
- $("playerName").value=name;
- $("displayName").textContent=name;
- localStorage.setItem("darkChessName",name);
+/* DELETE DAILY REMARK ONLY */
+function deleteDailyRemark(date) {
+    if (currentRole !== "ADMIN") return;
+
+    const item = data.find(record => record.date === date);
+    if (!item || !item.remark) return;
+
+    if (!confirm("Delete remark for " + date + "?")) return;
+
+    item.remark = "";
+
+    localStorage.setItem("kanyinData", JSON.stringify(data));
+
+    renderTable();
 }
 
-function init() {
- $("playerName").value=localStorage.getItem("darkChessName")||"Player";
- saveProfile();
- updateRecord();
+/* DELETE DATA */
+function deleteData(date) {
+    if (currentRole !== "ADMIN") return;
 
- $("saveProfile").onclick=saveProfile;
- $("newGame").onclick=newGame;
- $("undo").onclick=undoMove;
- $("playAgain").onclick=newGame;
- $("closeResult").onclick=()=>$("overlay").classList.remove("show");
+    if (!confirm("Are you sure you want to delete this record?")) return;
 
- $("resetRecord").onclick=()=>{
-  if(confirm("Reset all player records?")) {
-   saveRecord({wins:0,losses:0,draws:0});
-  }
- };
+    data = data.filter(item => item.date !== date);
 
- $("clockSetting").onchange=()=>{
-  if(confirm("Change clock and start a new game?")) newGame();
- };
+    localStorage.setItem("kanyinData", JSON.stringify(data));
 
- newGame();
+    setupFilters();
+    renderTable();
+    updateGraph();
 }
 
-/* CLOCK */
+/* TABLE */
+function renderTable() {
+    const tbody = document.getElementById("records");
+    tbody.innerHTML = "";
 
-function formatTime(seconds) {
- const m=Math.floor(seconds/60);
- const s=seconds%60;
- return String(m).padStart(2,"0")+":"+
-  String(s).padStart(2,"0");
+    [...data].sort((a, b) => b.date.localeCompare(a.date))
+    .forEach(item => {
+        const tr = document.createElement("tr");
+
+        const remarkCell = document.createElement("td");
+        remarkCell.className = "remark-cell";
+        remarkCell.textContent = item.remark || "—";
+
+        tr.innerHTML = `
+            <td>${item.date}</td>
+            <td>${item.mwh.toLocaleString()}</td>
+            <td>${item.water}</td>
+        `;
+
+        tr.appendChild(remarkCell);
+
+        if (currentRole === "ADMIN") {
+            const actionCell = document.createElement("td");
+
+            actionCell.innerHTML = `
+                <button class="action-btn note-btn"
+                    onclick="editDailyRemark('${item.date}')">
+                    NOTE
+                </button>
+
+                <button class="action-btn edit-btn"
+                    onclick="editData('${item.date}')">
+                    EDIT
+                </button>
+
+                <button class="action-btn delete-btn"
+                    onclick="deleteDailyRemark('${item.date}')">
+                    DEL NOTE
+                </button>
+
+                <button class="action-btn delete-btn"
+                    onclick="deleteData('${item.date}')">
+                    DELETE DATA
+                </button>
+            `;
+
+            tr.appendChild(actionCell);
+        }
+
+        tbody.appendChild(tr);
+    });
 }
 
-function updateClock() {
- $("whiteTime").textContent=formatTime(whiteSeconds);
- $("blackTime").textContent=formatTime(blackSeconds);
+/* GENERAL REMARKS */
+function saveNote() {
+    if (currentRole !== "ADMIN") return;
 
- $("whiteTime").classList.toggle("low",whiteSeconds<=30);
- $("blackTime").classList.toggle("low",blackSeconds<=30);
+    savedNote = document.getElementById("note").value;
 
- $("whiteClockBox").classList.toggle(
-  "active",timerStarted && game && game.turn()==="w" && !finished
- );
- $("blackClockBox").classList.toggle(
-  "active",timerStarted && game && game.turn()==="b" && !finished
- );
+    localStorage.setItem("kanyinNote", savedNote);
+
+    renderNote();
+    alert("General Remarks Saved!");
 }
 
-function startClock() {
- if(timerStarted || finished) return;
-
- timerStarted=true;
-
- timer=setInterval(()=>{
-  if(finished || !game) return;
-
-  if(game.turn()==="w") whiteSeconds--;
-  else blackSeconds--;
-
-  updateClock();
-
-  if(whiteSeconds<=0) {
-   whiteSeconds=0;
-   finishByTime("b");
-  }
-
-  if(blackSeconds<=0) {
-   blackSeconds=0;
-   finishByTime("w");
-  }
- },1000);
+function renderNote() {
+    document.getElementById("noteView").textContent = savedNote;
+    document.getElementById("note").value = savedNote;
 }
 
-function stopClock() {
- if(timer) clearInterval(timer);
- timer=null;
+/* GRAPH */
+function updateGraph() {
+    const period = document.getElementById("period").value;
+    const selectedYear = Number(document.getElementById("yearSelect").value);
+    const selectedMonth = Number(document.getElementById("monthSelect").value);
+
+    document.getElementById("monthSelect").disabled = period !== "daily";
+    document.getElementById("yearSelect").disabled = period === "yearly";
+
+    let labels = [];
+    let mwhValues = [];
+    let waterValues = [];
+
+    /* DAILY */
+    if (period === "daily") {
+        const daysInMonth = new Date(
+            selectedYear, selectedMonth, 0
+        ).getDate();
+
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateKey =
+                `${selectedYear}-${String(selectedMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+            labels.push(String(day));
+
+            const record = data.find(item => item.date === dateKey);
+
+            mwhValues.push(record ? record.mwh : null);
+            waterValues.push(record ? record.water : null);
+        }
+
+        document.getElementById("periodInfo").innerText =
+            `DAILY GRAPH: ${selectedYear} / ${selectedMonth} - ${daysInMonth} DAYS`;
+    }
+
+    /* MONTHLY */
+    else if (period === "monthly") {
+        const monthNames = [
+            "January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"
+        ];
+
+        for (let month = 1; month <= 12; month++) {
+            labels.push(monthNames[month - 1]);
+
+            const records = data.filter(item =>
+                Number(item.date.substring(0, 4)) === selectedYear &&
+                Number(item.date.substring(5, 7)) === month
+            );
+
+            const totalMwh = records.reduce((sum, item) => sum + item.mwh, 0);
+
+            const averageWater = records.length
+                ? records.reduce((sum, item) => sum + item.water, 0) / records.length
+                : null;
+
+            mwhValues.push(records.length ? totalMwh : null);
+            waterValues.push(averageWater);
+        }
+
+        document.getElementById("periodInfo").innerText =
+            `MONTHLY GRAPH: ${selectedYear}`;
+    }
+
+    /* YEARLY */
+    else {
+        const years = [...new Set(
+            data.map(item => Number(item.date.substring(0, 4)))
+        )].sort((a, b) => a - b);
+
+        if (years.length === 0) {
+            years.push(new Date().getFullYear());
+        }
+
+        years.forEach(year => {
+            labels.push(String(year));
+
+            const records = data.filter(item =>
+                Number(item.date.substring(0, 4)) === year
+            );
+
+            const totalMwh = records.reduce((sum, item) => sum + item.mwh, 0);
+
+            const averageWater = records.length
+                ? records.reduce((sum, item) => sum + item.water, 0) / records.length
+                : null;
+
+            mwhValues.push(records.length ? totalMwh : null);
+            waterValues.push(averageWater);
+        });
+
+        document.getElementById("periodInfo").innerText = "YEARLY GRAPH";
+    }
+
+    if (chart) chart.destroy();
+
+    const ctx = document.getElementById("graph").getContext("2d");
+
+    chart = new Chart(ctx, {
+        type: "line",
+
+        data: {
+            labels: labels,
+
+            datasets: [
+                {
+                    label: "MWh",
+                    data: mwhValues,
+                    yAxisID: "y",
+                    borderColor: "#00A8FF",
+                    backgroundColor: "rgba(0,168,255,0.15)",
+                    borderWidth: 3,
+
+                    /* Slightly curved, sharper line */
+                    tension: 0.22,
+
+                    pointRadius: 3,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: "#00A8FF",
+                    pointBorderColor: "#ffffff",
+                    pointBorderWidth: 1,
+                    spanGaps: true
+                },
+                {
+                    label: "Water Level (m)",
+                    data: waterValues,
+                    yAxisID: "y1",
+                    borderColor: "#FF1744",
+                    backgroundColor: "rgba(255,23,68,0.12)",
+                    borderWidth: 3,
+
+                    /* Slightly curved, sharper line */
+                    tension: 0.22,
+
+                    pointRadius: 3,
+                    pointHoverRadius: 8,
+                    pointBackgroundColor: "#FF1744",
+                    pointBorderColor: "#ffffff",
+                    pointBorderWidth: 1,
+                    spanGaps: true
+                }
+            ]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            interaction: {
+                mode: "index",
+                intersect: false
+            },
+
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "white",
+                        font: {
+                            size: 13,
+                            weight: "bold"
+                        }
+                    }
+                }
+            },
+
+            scales: {
+                x: {
+                    position: "bottom",
+
+                    title: {
+                        display: true,
+                        text: period === "daily"
+                            ? "DATE (1 - END OF MONTH)"
+                            : period === "monthly" ? "MONTH" : "YEAR",
+                        color: "#39FF14",
+                        font: {
+                            size: 14,
+                            weight: "bold"
+                        }
+                    },
+
+                    ticks: {
+                        color: "#FFFFFF",
+                        autoSkip: false,
+                        maxRotation: 60,
+                        minRotation: 45
+                    },
+
+                    grid: {
+                        display: true,
+                        color: "#39FF14",
+                        lineWidth: 1
+                    },
+
+                    border: {
+                        color: "#39FF14",
+                        width: 2
+                    }
+                },
+
+                /* LEFT AXIS: MWh 0.00 - 10.60 */
+                y: {
+                    type: "linear",
+                    position: "left",
+
+                    min: 0,
+                    max: 10.6,
+
+                    title: {
+                        display: true,
+                        text: "MWh",
+                        color: "#00A8FF"
+                    },
+
+                    ticks: {
+                        color: "#00A8FF",
+                        stepSize: 1,
+                        callback: function(value) {
+                            return Number(value).toFixed(2);
+                        }
+                    },
+
+                    grid: {
+                        display: true,
+                        color: "rgba(57,255,20,0.45)",
+                        lineWidth: 1
+                    },
+
+                    border: {
+                        color: "#39FF14",
+                        width: 2
+                    }
+                },
+
+                /* RIGHT AXIS: WATER LEVEL 260.00 - 295.00 */
+                y1: {
+                    type: "linear",
+                    position: "right",
+
+                    min: 260,
+                    max: 295,
+
+                    title: {
+                        display: true,
+                        text: "WATER LEVEL (m)",
+                        color: "#FF1744"
+                    },
+
+                    ticks: {
+                        color: "#FF1744",
+                        stepSize: 5,
+                        callback: function(value) {
+                            return Number(value).toFixed(2);
+                        }
+                    },
+
+                    grid: {
+                        drawOnChartArea: false
+                    },
+
+                    border: {
+                        color: "#39FF14",
+                        width: 2
+                    }
+                }
+            }
+        }
+    });
 }
-
-/* BOARD */
-
-function render() {
- const board=$("board");
- board.innerHTML="";
-
- if(!game) return;
-
- const position=game.board();
-
- for(let r=0;r<8;r++) {
-  for(let c=0;c<8;c++) {
-   const name="abcdefgh"[c]+(8-r);
-   const piece=position[r][c];
-
-   const square=document.createElement("div");
-   square.className="square "+((r+c)%2===0?"light":"dark");
-
-   if(selected===name) square.classList.add("selected");
-
-   const target=possible.find(m=>m.to===name);
-
-   if(target) square.classList.add(piece?"capture":"target");
-
-   if(piece) {
-    const span=document.createElement("span");
-    span.className="piece";
-    span.textContent=glyph[piece.color+piece.type];
-    span.style.color=piece.color==="w"?"#fff":"#111827";
-    span.style.webkitTextStroke=piece.color==="w"?
-     "1px #333":"1px #f1f5f9";
-    square.appendChild(span);
-   }
-
-   square.onclick=()=>clickSquare(name);
-   board.appendChild(square);
-  }
- }
-
- updateClock();
- updateInfo();
-}
-
-/* PLAYER MOVE */
-
-function clickSquare(name) {
- if(!game || thinking || finished || game.game_over()) return;
- if(game.turn()!=="w") return;
-
- const piece=game.get(name);
-
- if(selected && possible.some(m=>m.to===name)) {
-  makeMove(selected,name);
-  return;
- }
-
- if(piece && piece.color==="w") {
-  selected=name;
-  possible=game.moves({square:name,verbose:true});
- } else {
-  selected=null;
-  possible=[];
- }
-
- render();
-}
-
-function saveClockSnapshot() {
- clockHistory.push({
-  white:whiteSeconds,
-  black:blackSeconds,
-  started:timerStarted
- });
-}
-
-function makeMove(from,to) {
- const before=game.get(to);
- saveClockSnapshot();
-
- try {
-  const move=game.move({
-   from:from,
-   to:to,
-   promotion:"q"
-  });
-
-  if(!move) return;
-
-  startClock();
-  sound(before?"capture":"move");
-
-  selected=null;
-  possible=[];
-
-  render();
-  checkGameOver();
-
-  if(!finished) {
-   thinking=true;
-   updateInfo();
-   setTimeout(aiMove,350);
-  }
- } catch(e) {
-  showError("Move error: "+e.message);
- }
-}
-
-/* AI ENGINE */
-
-function evaluate() {
- if(game.in_checkmate()) {
-  return game.turn()==="w"?-100000:100000;
- }
-
- if(game.game_over()) return 0;
-
- let score=0;
- const board=game.board();
-
- for(let r=0;r<8;r++) {
-  for(let c=0;c<8;c++) {
-   const p=board[r][c];
-   if(!p) continue;
-
-   let v=values[p.type];
-
-   if(p.type==="p") {
-    v+=(p.color==="w"?(6-r)*5:(r-1)*5);
-   }
-
-   if(p.type==="n" || p.type==="b") {
-    v+=(3.5-Math.abs(3.5-c))*5;
-   }
-
-   score+=p.color==="w"?v:-v;
-  }
- }
-
- return score;
-}
-
-function minimax(depth,alpha,beta) {
- if(depth===0 || game.game_over()) return evaluate();
-
- const moves=game.moves();
-
- if(game.turn()==="w") {
-  let best=-Infinity;
-
-  for(const m of moves) {
-   game.move(m);
-   const score=minimax(depth-1,alpha,beta);
-   game.undo();
-
-   best=Math.max(best,score);
-   alpha=Math.max(alpha,best);
-
-   if(beta<=alpha) break;
-  }
-
-  return best;
- } else {
-  let best=Infinity;
-
-  for(const m of moves) {
-   game.move(m);
-   const score=minimax(depth-1,alpha,beta);
-   game.undo();
-
-   best=Math.min(best,score);
-   beta=Math.min(beta,best);
-
-   if(beta<=alpha) break;
-  }
-
-  return best;
- }
-}
-
-function aiMove() {
- if(finished || !game || game.game_over()) {
-  thinking=false;
-  checkGameOver();
-  render();
-  return;
- }
-
- try {
-  const depth=Number($("difficulty").value);
-  const moves=game.moves();
-
-  let bestScore=Infinity;
-  let bestMoves=[];
-
-  for(const m of moves) {
-   game.move(m);
-   const score=minimax(depth-1,-Infinity,Infinity);
-   game.undo();
-
-   if(score<bestScore) {
-    bestScore=score;
-    bestMoves=[m];
-   } else if(score===bestScore) {
-    bestMoves.push(m);
-   }
-  }
-
-  if(bestMoves.length) {
-   const chosen=bestMoves[
-    Math.floor(Math.random()*bestMoves.length)
-   ];
-
-   saveClockSnapshot();
-   const capture=game.get(chosen.to);
-   game.move(chosen);
-
-   sound(capture?"capture":"move");
-  }
-
-  thinking=false;
-  selected=null;
-  possible=[];
-
-  render();
-  checkGameOver();
-
- } catch(e) {
-  thinking=false;
-  showError("AI error: "+e.message);
-  render();
- }
-}
-
-/* GAME RESULT */
-
-function showResult(icon,title,message) {
- $("resultIcon").textContent=icon;
- $("resultTitle").textContent=title;
- $("resultText").textContent=message;
- $("overlay").classList.add("show");
-}
-
-function finishByTime(winner) {
- if(finished) return;
-
- finished=true;
- timeWinner=winner;
- thinking=false;
- stopClock();
-
- if(winner==="w") {
-  const r=getRecord();r.wins++;saveRecord(r);
-  sound("win");
-  showResult("🏆","YOU WIN!","Computer ran out of time!");
- } else {
-  const r=getRecord();r.losses++;saveRecord(r);
-  sound("lose");
-  showResult("💔","YOU LOSE!","Your time has run out!");
- }
-
- updateInfo();
-}
-
-function checkGameOver() {
- if(!game || finished || !game.game_over()) return;
-
- finished=true;
- stopClock();
-
- if(game.in_checkmate()) {
-  if(game.turn()==="b") {
-   const r=getRecord();r.wins++;saveRecord(r);
-   sound("win");
-   showResult("🏆","YOU WIN!","Congratulations! You checkmated the AI.");
-  } else {
-   const r=getRecord();r.losses++;saveRecord(r);
-   sound("lose");
-   showResult("💔","YOU LOSE!","Computer checkmated you!");
-  }
- } else {
-  const r=getRecord();r.draws++;saveRecord(r);
-  sound("check");
-  showResult("🤝","DRAW!","The game ended in a draw.");
- }
-
- updateInfo();
-}
-
-/* STATUS AND HISTORY */
-
-function updateInfo() {
- if(!game) return;
-
- let message="";
-
- if(finished) {
-  message=timeWinner?
-   (timeWinner==="w"?"🏆 You win on time!":"⏰ Computer wins on time!") :
-   "Game finished.";
- } else if(game.in_checkmate()) {
-  message="CHECKMATE!";
- } else if(game.in_draw()) {
-  message="DRAW!";
- } else if(thinking) {
-  message="🤖 Computer is thinking...";
- } else if(game.in_check()) {
-  message="⚠ CHECK! "+
-   (game.turn()==="w"?"Your turn":"Computer's turn");
- } else {
-  message=game.turn()==="w"?
-   "⚪ Your turn — White":"⚫ Computer's turn";
- }
-
- $("status").textContent=message;
-
- $("whitePlayer").classList.toggle(
-  "active",game.turn()==="w"&&!finished
- );
- $("blackPlayer").classList.toggle(
-  "active",game.turn()==="b"&&!finished
- );
-
- const history=game.history();
- const box=$("history");
- box.innerHTML="";
-
- for(let i=0;i<history.length;i+=2) {
-  const row=document.createElement("div");
-  row.textContent=(Math.floor(i/2)+1)+". "+
-   history[i]+"   "+(history[i+1]||"");
-  box.appendChild(row);
- }
-
- box.scrollTop=box.scrollHeight;
-}
-
-/* UNDO */
-
-function undoMove() {
- if(!game || thinking || finished) return;
-
- if(game.history().length===0) return;
-
- let count=game.history().length>=2?2:1;
-
- for(let i=0;i<count;i++) {
-  game.undo();
- }
-
- const snapshotIndex=Math.max(0,clockHistory.length-count-1);
- const snapshot=clockHistory[snapshotIndex];
-
- clockHistory=clockHistory.slice(0,snapshotIndex);
-
- if(snapshot) {
-  whiteSeconds=snapshot.white;
-  blackSeconds=snapshot.black;
-  timerStarted=snapshot.started;
- }
-
- stopClock();
-
- if(timerStarted) startClock();
-
- selected=null;
- possible=[];
- render();
-}
-
-/* NEW GAME */
-
-function newGame() {
- if(!window.Chess) return;
-
- stopClock();
-
- game=new Chess();
- selected=null;
- possible=[];
- thinking=false;
- finished=false;
- timeWinner=null;
- timerStarted=false;
- clockHistory=[];
-
- const minutes=Number($("clockSetting").value);
- whiteSeconds=minutes*60;
- blackSeconds=minutes*60;
-
- $("overlay").classList.remove("show");
- $("error").textContent="";
-
- updateClock();
- render();
-}
-
-/* START */
-
-loadLibrary();
 
 </script>
+
 </body>
 </html>
