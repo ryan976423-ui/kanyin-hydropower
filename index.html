@@ -503,6 +503,7 @@ function saveData() {
 
     const index = data.findIndex(item => item.date === date);
 
+    // Keep an existing remark if the new remark box is left empty.
     const oldRemark = index >= 0 ? (data[index].remark || "") : "";
 
     const record = {
@@ -788,15 +789,9 @@ function updateGraph() {
                     borderColor: "#00A8FF",
                     backgroundColor: "rgba(0,168,255,0.15)",
                     borderWidth: 3,
-
-                    /* Slightly curved, sharper line */
-                    tension: 0.22,
-
+                    tension: 0.35,
                     pointRadius: 3,
                     pointHoverRadius: 8,
-                    pointBackgroundColor: "#00A8FF",
-                    pointBorderColor: "#ffffff",
-                    pointBorderWidth: 1,
                     spanGaps: true
                 },
                 {
@@ -806,15 +801,9 @@ function updateGraph() {
                     borderColor: "#FF1744",
                     backgroundColor: "rgba(255,23,68,0.12)",
                     borderWidth: 3,
-
-                    /* Slightly curved, sharper line */
-                    tension: 0.22,
-
+                    tension: 0.35,
                     pointRadius: 3,
                     pointHoverRadius: 8,
-                    pointBackgroundColor: "#FF1744",
-                    pointBorderColor: "#ffffff",
-                    pointBorderWidth: 1,
                     spanGaps: true
                 }
             ]
@@ -876,13 +865,9 @@ function updateGraph() {
                     }
                 },
 
-                /* LEFT AXIS: MWh 0.00 - 10.60 */
                 y: {
                     type: "linear",
                     position: "left",
-
-                    min: 0,
-                    max: 10.6,
 
                     title: {
                         display: true,
@@ -891,11 +876,7 @@ function updateGraph() {
                     },
 
                     ticks: {
-                        color: "#00A8FF",
-                        stepSize: 1,
-                        callback: function(value) {
-                            return Number(value).toFixed(2);
-                        }
+                        color: "#00A8FF"
                     },
 
                     grid: {
@@ -910,13 +891,9 @@ function updateGraph() {
                     }
                 },
 
-                /* RIGHT AXIS: WATER LEVEL 260.00 - 295.00 */
                 y1: {
                     type: "linear",
                     position: "right",
-
-                    min: 260,
-                    max: 295,
 
                     title: {
                         display: true,
@@ -925,11 +902,7 @@ function updateGraph() {
                     },
 
                     ticks: {
-                        color: "#FF1744",
-                        stepSize: 5,
-                        callback: function(value) {
-                            return Number(value).toFixed(2);
-                        }
+                        color: "#FF1744"
                     },
 
                     grid: {
